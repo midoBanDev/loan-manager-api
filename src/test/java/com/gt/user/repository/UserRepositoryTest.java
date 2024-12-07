@@ -3,12 +3,14 @@ package com.gt.user.repository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.gt.user.domain.entity.User;
 import com.gt.user.domain.repository.UserRepository;
 
-@SpringBootTest
+@DataJpaTest
+@ActiveProfiles("test")
 public class UserRepositoryTest {
     
     @Autowired
@@ -27,7 +29,7 @@ public class UserRepositoryTest {
     @Test
     public void find(){
 
-        User user = userRepository.findByEmail("test@test.com");
+        User user = userRepository.findByEmail("test@test.com").get();
         Assertions.assertThat(user.getNickname()).isEqualTo("test");
     }
 }

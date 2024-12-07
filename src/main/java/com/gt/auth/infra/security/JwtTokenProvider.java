@@ -11,8 +11,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+
+import com.gt.auth.application.service.CustomUserDetailsService;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -34,7 +35,7 @@ public class JwtTokenProvider {
 
     private SecretKey key;
 
-    private final UserDetailsService userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
 
     @PostConstruct
     protected void init() {
@@ -43,14 +44,12 @@ public class JwtTokenProvider {
     }
 
     public String createToken(String username, String roles) {
-        Claims claims = Jwts.claims().subject(username).build();
-        claims.put("roles", roles);
-
         Date now = new Date();
         Date validity = new Date(now.getTime() + (tokenValidityInSeconds * 1000));
 
         return Jwts.builder()
-                .claims(claims)
+                .subject(username)
+                .claim("roles", roles)
                 .issuedAt(now)
                 .expiration(validity)
                 .signWith(key)
