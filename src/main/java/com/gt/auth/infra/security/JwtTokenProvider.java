@@ -23,13 +23,13 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
-    @Value("${app.jwt.secret}")
+    @Value("${jwt.secret}")
     private String secretKey;
 
-    @Value("${app.jwt.token-validity-in-milliseconds}")
-    private long tokenValidityInMilliseconds;
+    @Value("${jwt.expiration-seconds}")
+    private long tokenValidityInSeconds;
 
-    @Value("${app.jwt.refresh-token-validity-in-milliseconds}")
+    @Value("${jwt.refresh-token-validity-in-milliseconds}")
     private long refreshTokenValidityInMilliseconds;
 
     private SecretKey key;
@@ -47,7 +47,7 @@ public class JwtTokenProvider {
         claims.put("roles", roles);
 
         Date now = new Date();
-        Date validity = new Date(now.getTime() + tokenValidityInMilliseconds);
+        Date validity = new Date(now.getTime() + (tokenValidityInSeconds * 1000));
 
         return Jwts.builder()
                 .claims(claims)
@@ -100,7 +100,7 @@ public class JwtTokenProvider {
     }
 
     public long getTokenExpirationInSeconds() {
-        return tokenValidityInMilliseconds / 1000;
+        return tokenValidityInSeconds;
     }
 
     public long getRefreshTokenExpirationInSeconds() {
