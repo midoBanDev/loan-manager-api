@@ -34,7 +34,8 @@ public class AuthService {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .tokenType("Bearer")
-                .expiresIn(jwtTokenProvider.getTokenExpirationInSeconds())
+                .accessTokenExpiresIn(jwtTokenProvider.getTokenExpirationInSeconds())
+                .refreshTokenExpiresIn(jwtTokenProvider.getRefreshTokenExpirationInSeconds())
                 .build();
     }
 
@@ -55,7 +56,8 @@ public class AuthService {
                 .accessToken(newAccessToken)
                 .refreshToken(newRefreshToken)
                 .tokenType("Bearer")
-                .expiresIn(jwtTokenProvider.getTokenExpirationInSeconds())
+                .accessTokenExpiresIn(jwtTokenProvider.getTokenExpirationInSeconds())
+                .refreshTokenExpiresIn(jwtTokenProvider.getRefreshTokenExpirationInSeconds())
                 .build();
     }
 } 
