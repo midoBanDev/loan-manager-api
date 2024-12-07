@@ -1,4 +1,4 @@
-package com.gt.auth.config;
+package com.gt.global.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
