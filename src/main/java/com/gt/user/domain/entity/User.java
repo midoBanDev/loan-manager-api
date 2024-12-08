@@ -1,46 +1,42 @@
 package com.gt.user.domain.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
+import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
-@Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(of = "id")
-@ToString(of = {"id", "email", "nickname"})
+@NoArgsConstructor
+@Entity
 @Table(name = "users")
 public class User {
-    
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
-    @Column(name = "email", nullable = false, unique = true, length = 100)
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password", nullable = false, length = 100)
-    private String password;
+    private String picture;
 
-    @Column(name = "nickname", nullable = false, unique = true, length = 100)
-    private String nickname;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserRole role;
 
-    private User(String email, String password, String nickname) {
+    @Builder
+    public User(String name, String email, String picture, UserRole role) {
+        this.name = name;
         this.email = email;
-        this.password = password;
-        this.nickname = nickname;
+        this.picture = picture;
+        this.role = role;
     }
-    
-    public static User createUser(String email, String password, String nickname) {
-        return new User(email, password, nickname);
+
+    public User update(String name, String picture) {
+        this.name = name;
+        this.picture = picture;
+        return this;
     }
 }

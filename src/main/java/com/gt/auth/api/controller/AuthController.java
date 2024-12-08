@@ -1,10 +1,7 @@
 package com.gt.auth.api.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.gt.auth.api.dto.AuthRequest;
 import com.gt.auth.api.dto.AuthResponse;
@@ -24,5 +21,23 @@ public class AuthController {
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest request) {
         AuthResponse response = authService.login(request);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<AuthResponse> refresh(@RequestHeader("Authorization") String refreshToken) {
+        if (refreshToken != null && refreshToken.startsWith("Bearer ")) {
+            refreshToken = refreshToken.substring(7);
+        }
+        AuthResponse response = authService.refreshToken(refreshToken);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestHeader("Authorization") String accessToken) {
+        if (accessToken != null && accessToken.startsWith("Bearer ")) {
+            accessToken = accessToken.substring(7);
+        }
+        authService.logout(accessToken);
+        return ResponseEntity.ok().build();
     }
 } 

@@ -23,8 +23,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         return userRepository.findByEmail(email)
                 .map(user -> org.springframework.security.core.userdetails.User.builder()
                         .username(user.getEmail())
-                        .password(user.getPassword())
-                        .authorities(Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")))
+                        .password("")
+                        .authorities(Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getKey())))
                         .build())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
     }

@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.gt.user.domain.entity.User;
+import com.gt.user.domain.entity.UserRole;
 import com.gt.user.domain.repository.UserRepository;
 
 @DataJpaTest
@@ -19,7 +20,7 @@ public class UserRepositoryTest {
 
     @Test
     public void save() {
-        User user = User.createUser("test@test.com", "test1234", "test");
+        User user = new User("test@test.com", "test1234", "test", UserRole.ADMIN);
         User saveUser = userRepository.save(user);
 
         User findUser = userRepository.findById(saveUser.getId()).orElseThrow(() -> new RuntimeException("User not found"));
@@ -30,6 +31,6 @@ public class UserRepositoryTest {
     public void find(){
 
         User user = userRepository.findByEmail("test@test.com").get();
-        Assertions.assertThat(user.getNickname()).isEqualTo("test");
+        Assertions.assertThat(user.getRole().getKey()).isEqualTo("ROLE_ADMIN");
     }
 }
