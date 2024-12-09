@@ -69,4 +69,16 @@ app:
       - http://localhost:3000/oauth2/redirect
     success-url: http://localhost:3000/oauth2/success
     failure-url: http://localhost:3000/oauth2/failure
-  
+
+# Logging Configuration
+logging:
+  file:
+    name: logs/application.log
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  level:
+    root: INFO
+    com.gt: DEBUG
+    org.springframework.web: INFO
+    org.hibernate: INFO  

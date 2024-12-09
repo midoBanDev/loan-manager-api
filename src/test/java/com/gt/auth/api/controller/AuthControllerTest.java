@@ -82,6 +82,11 @@ class AuthControllerTest {
     }
 
     @Test
+    void localTEst(){
+        System.out.println("테스트 돌아가닌");
+    }
+    
+    @Test
     @DisplayName("로그인 테스트 - 응답 내용 로깅")
     void login() throws Exception {
         // given
