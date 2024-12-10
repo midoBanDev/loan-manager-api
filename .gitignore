@@ -38,3 +38,6 @@ out/
 
 ### OAuth2 Configuration ###
 src/main/resources/application-oauth.yml
+
+# log 폴더 제외
+log/*

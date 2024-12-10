@@ -48,6 +48,12 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
+
+	// google
+	implementation 'com.google.api-client:google-api-client:2.7.0'
+
+
+
 	// test lombok
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'

@@ -5,10 +5,16 @@ import org.springframework.web.bind.annotation.*;
 
 import com.gt.auth.api.dto.AuthRequest;
 import com.gt.auth.api.dto.AuthResponse;
+import com.gt.auth.api.dto.SocialLoginRequest;
 import com.gt.auth.application.service.AuthService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+
+import javax.naming.AuthenticationException;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -39,5 +45,11 @@ public class AuthController {
         }
         authService.logout(accessToken);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/social/google")
+    public ResponseEntity<AuthResponse> googleLogin(@Valid @RequestBody SocialLoginRequest request) throws GeneralSecurityException, IOException, AuthenticationException {
+        AuthResponse response = authService.socialLogin("google", request.getTokenId());
+        return ResponseEntity.ok(response);
     }
 } 

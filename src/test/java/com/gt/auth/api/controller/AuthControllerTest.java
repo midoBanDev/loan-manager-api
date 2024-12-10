@@ -18,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -71,13 +72,15 @@ class AuthControllerTest {
 
     @BeforeEach
     void setUp() {
+        log.info("테스트 시작");
         // 테스트용 사용자 생성
-        User user = new User(
-            "test@example.com",
-            passwordEncoder.encode("password123"),
-            "testuser",
-            UserRole.ADMIN
-        );
+        User user = User.builder()
+                .email("test@example.com")
+                .password(passwordEncoder.encode("password123"))
+                .name("testuser")
+                .role(UserRole.ADMIN)
+                .provider("local")
+                .build();
         userRepository.save(user);
     }
 
@@ -217,5 +220,16 @@ class AuthControllerTest {
         // When & Then
         mockMvc.perform(get("/login/oauth2/code/google"))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void generateHashedPassword() {
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        String hashedPassword = encoder.encode("password123");
+        System.out.println("Hashed password: " + hashedPassword);
+        
+        // 검증
+        boolean matches = encoder.matches("password123", hashedPassword);
+        Assertions.assertThat(matches).isTrue();
     }
 } 
