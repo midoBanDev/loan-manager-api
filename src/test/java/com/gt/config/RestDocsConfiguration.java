@@ -13,12 +13,8 @@ public class RestDocsConfiguration {
     public RestDocumentationResultHandler write() {
         return MockMvcRestDocumentation.document(
             "{class-name}/{method-name}",  // 문서 조각이 생성될 디렉토리 경로
-            Preprocessors.preprocessRequest(
-                Preprocessors.prettyPrint()  // 요청 본문을 보기 좋게 출력
-            ),
-            Preprocessors.preprocessResponse(
-                Preprocessors.prettyPrint()  // 응답 본문을 보기 좋게 출력
-            )
+            Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),     // 요청 본문을 보기 좋게 출력
+            Preprocessors.preprocessResponse(Preprocessors.prettyPrint())  // 응답 본문을 보기 좋게 출력
         );
     }
 }

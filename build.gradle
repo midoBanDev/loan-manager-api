@@ -2,7 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.4.0'
 	id 'io.spring.dependency-management' version '1.1.6'
-	id 'org.asciidoctor.jvm.convert' version '3.3.2'
+	id 'org.asciidoctor.jvm.convert' version '3.3.2'    //  Asciidoctor 플러그인 적용
 }
 
 group = 'com.gt'
@@ -22,16 +22,9 @@ configurations {
 	asciidoctorExtensions
 }
 
-// 레포지토리 설정
+// 레포지토리 설정: 의존성을 가져올 저장소 설정
 repositories {
-	mavenCentral()
-}
-
-ext {
-    set('snippetsDir', file("build/generated-snippets"))
-    asciidoctorExtensions = [
-        'spring-restdocs-asciidoctor'
-    ]
+	mavenCentral()  // Maven 중앙 저장소 사용
 }
 
 dependencies {
@@ -73,7 +66,6 @@ dependencies {
 	
 	// Spring REST Docs 의존성
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'    // MockMvc 사용
-    testImplementation 'org.springframework.restdocs:spring-restdocs-core'       // 코어 기능
     asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'      // Asciidoctor 확장
 
 
@@ -81,28 +73,33 @@ dependencies {
 	testRuntimeOnly 'com.h2database:h2'
 }
 
-
-// REST Docs 테스트와 통합 테스트 분리
-tasks.named('test').configure {
-    outputs.dir snippetsDir
-    useJUnitPlatform()
+// ext: Gradle의 확장 속성 정의
+ext {
+    set('snippetsDir', file("build/generated-snippets"))    // snippetsDir 전역 변수 선언: REST Docs 스니펫이 생성될 디렉토리 지정
 }
 
-// 통합 테스트를 위한 별도 태스크
-tasks.register('integrationTest', Test).configure {
+// REST Docs 테스트
+tasks.named('test').configure {
+    doFirst {
+        println "test task 시작"
+    }
     outputs.dir snippetsDir
-    useJUnitPlatform {
-        includeTags 'integration' // integration 태그를 가진 테스트만 실행
+    useJUnitPlatform()
+
+    testLogging {
+        // 표준 출력 로그만 보기
+        showStandardStreams = true
+        
+        // 실패한 테스트에 대해서만 상세 정보 표시
+        events "failed"
+        exceptionFormat = 'full'
     }
 }
 
-// 모든 테스트를 실행하는 태스크
-tasks.register('allTests', Test).configure {
-    outputs.dir snippetsDir
-    useJUnitPlatform()  // 모든 테스트 실행
-}
-
 tasks.named('asciidoctor').configure {
+    doFirst {
+        println "asciidoctor task 시작"
+    }
     inputs.dir snippetsDir
     configurations 'asciidoctorExtensions'
     dependsOn test
@@ -120,14 +117,50 @@ tasks.named('asciidoctor').configure {
     ]
 }
 
-tasks.named('bootJar').configure {
+
+// static/docs 폴더 비우기
+asciidoctor.doFirst {
+    println "asciidoctor.doFirst 시작"
+    delete file('src/main/resources/static/docs')
+}
+
+// asccidoctor 작업 이후 생성된 HTML 파일을 static/docs 로 copy
+tasks.register('copyDocument', Copy) {
+    doFirst {
+        println "copyDocument task 시작"
+    }
     dependsOn asciidoctor
+    from file("build/docs/asciidoc")
+    into file("src/main/resources/static/docs")
+}
+
+
+tasks.named('bootJar').configure {
+    doFirst {
+        println "bootJar task 시작"
+    }
+    dependsOn copyDocument
     copy {
         from "${asciidoctor.outputDir}"
         into 'build/resources/main/static/docs'
     }
 }
 
+// clean 명령어 사용 시에만 static/docs 폴더 삭제. 
+// build 태스크와는 독립적으로 실행, ./gradlew clean 명령어 사용 시에만 실행
 tasks.named('clean').configure {
+    doFirst {
+        println "clean task 시작"
+    }
     delete file('src/main/resources/static/docs')
 }
+
+
+/*
+./gradlew build 실행 시:
+
+1. build 태스크 시작
+   └── bootJar (build의 의존성)
+        └── copyDocument (bootJar의 의존성)
+             └── asciidoctor (copyDocument의 의존성)
+*/

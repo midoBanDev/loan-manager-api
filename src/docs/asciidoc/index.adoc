@@ -1,0 +1,74 @@
+= GT Platform API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+
+[[overview]]
+== Overview
+
+[[overview-http-verbs]]
+=== HTTP Methods
+
+|===
+| Method | Usage
+
+| `GET`
+| 리소스를 조회할 때 사용
+
+| `POST`
+| 새 리소스를 생성할 때 사용
+
+| `PUT`
+| 기존 리소스를 수정할 때 사용
+
+| `DELETE`
+| 기존 리소스를 삭제할 때 사용
+|===
+
+[[overview-http-status-codes]]
+=== HTTP Status Codes
+
+|===
+| Status code | Usage
+
+| `200 OK`
+| 요청을 성공적으로 처리
+
+| `201 Created`
+| 새 리소스를 성공적으로 생성
+
+| `400 Bad Request`
+| 잘못된 요청
+
+| `401 Unauthorized`
+| 인증 실패
+
+| `403 Forbidden`
+| 권한 없음
+
+| `404 Not Found`
+| 존재하지 않는 리소스
+|===
+
+[[auth]]
+== 인증 API
+
+[[auth-login]]
+=== 로그인
+
+`POST /api/v1/auth/login`
+
+==== Request Fields
+include::{snippets}/auth-controller-test/login/request-fields.adoc[]
+
+==== Response Fields
+include::{snippets}/auth-controller-test/login/response-fields.adoc[]
+
+==== HTTP Request
+include::{snippets}/auth-controller-test/login/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/auth-controller-test/login/http-response.adoc[]

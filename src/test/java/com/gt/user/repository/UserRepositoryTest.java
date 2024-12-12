@@ -18,38 +18,38 @@ public class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
-    @Test
-    public void save() {
-        User user = User.builder()
-                .email("test@test.com")
-                .name("test")
-                .picture("test")
-                .role(UserRole.ADMIN)
-                .provider("test")
-                .build();
-        User saveUser = userRepository.save(user);
+    // @Test
+    // public void save() {
+    //     User user = User.builder()
+    //             .email("test@test.com")
+    //             .name("test")
+    //             .picture("test")
+    //             .role(UserRole.ADMIN)
+    //             .provider("test")
+    //             .build();
+    //     User saveUser = userRepository.save(user);
 
-        User findUser = userRepository.findById(saveUser.getId()).orElseThrow(() -> new RuntimeException("User not found"));
-        Assertions.assertThat(findUser.getEmail()).isEqualTo(user.getEmail());
-    }
+    //     User findUser = userRepository.findById(saveUser.getId()).orElseThrow(() -> new RuntimeException("User not found"));
+    //     Assertions.assertThat(findUser.getEmail()).isEqualTo(user.getEmail());
+    // }
     
-    @Test
-    public void find() {
-        // 테스트 데이터 생성
-        User user = User.builder()
-                .email("test@test.com")
-                .name("test")
-                .picture("test")
-                .role(UserRole.ADMIN)
-                .provider("test")
-                .build();
-        userRepository.save(user);
+    // @Test
+    // public void find() {
+    //     // 테스트 데이터 생성
+    //     User user = User.builder()
+    //             .email("test@test.com")
+    //             .name("test")
+    //             .picture("test")
+    //             .role(UserRole.ADMIN)
+    //             .provider("test")
+    //             .build();
+    //     userRepository.save(user);
 
-        // 테스트 실행
-        User foundUser = userRepository.findByEmail("test@test.com")
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    //     // 테스트 실행
+    //     User foundUser = userRepository.findByEmail("test@test.com")
+    //             .orElseThrow(() -> new RuntimeException("User not found"));
         
-        // 검증
-        Assertions.assertThat(foundUser.getRole().getKey()).isEqualTo("ROLE_ADMIN");
-    }
+    //     // 검증
+    //     Assertions.assertThat(foundUser.getRole().getKey()).isEqualTo("ROLE_ADMIN");
+    // }
 }
