@@ -18,14 +18,6 @@ spring:
         use_sql_comments: true
         show_sql: true
 
-  # Security OAuth2 Configuration
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            redirect-uri: http://localhost:8080/login/oauth2/code/google
-
 # JWT Configuration
 jwt:
   secret: testsecretkey12345678901234567890

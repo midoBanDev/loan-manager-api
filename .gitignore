@@ -41,3 +41,6 @@ src/main/resources/application-oauth.yml
 
 # log 폴더 제외
 log/*
+
+# docs 폴더 제외
+**/src/main/resources/static/docs/*

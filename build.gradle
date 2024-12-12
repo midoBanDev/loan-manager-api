@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.4.0'
 	id 'io.spring.dependency-management' version '1.1.6'
+	id 'org.asciidoctor.jvm.convert' version '3.3.2'
 }
 
 group = 'com.gt'
@@ -13,14 +14,24 @@ java {
 	}
 }
 
+// 컴파일 시 옵션 설정
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	asciidoctorExtensions
 }
 
+// 레포지토리 설정
 repositories {
 	mavenCentral()
+}
+
+ext {
+    set('snippetsDir', file("build/generated-snippets"))
+    asciidoctorExtensions = [
+        'spring-restdocs-asciidoctor'
+    ]
 }
 
 dependencies {
@@ -48,11 +59,8 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
-
 	// google
 	implementation 'com.google.api-client:google-api-client:2.7.0'
-
-
 
 	// test lombok
 	testCompileOnly 'org.projectlombok:lombok'
@@ -63,10 +71,63 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	
+	// Spring REST Docs 의존성
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'    // MockMvc 사용
+    testImplementation 'org.springframework.restdocs:spring-restdocs-core'       // 코어 기능
+    asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'      // Asciidoctor 확장
+
+
 	// H2 database for testing
 	testRuntimeOnly 'com.h2database:h2'
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
+
+// REST Docs 테스트와 통합 테스트 분리
+tasks.named('test').configure {
+    outputs.dir snippetsDir
+    useJUnitPlatform()
+}
+
+// 통합 테스트를 위한 별도 태스크
+tasks.register('integrationTest', Test).configure {
+    outputs.dir snippetsDir
+    useJUnitPlatform {
+        includeTags 'integration' // integration 태그를 가진 테스트만 실행
+    }
+}
+
+// 모든 테스트를 실행하는 태스크
+tasks.register('allTests', Test).configure {
+    outputs.dir snippetsDir
+    useJUnitPlatform()  // 모든 테스트 실행
+}
+
+tasks.named('asciidoctor').configure {
+    inputs.dir snippetsDir
+    configurations 'asciidoctorExtensions'
+    dependsOn test
+    
+    sources {
+        include "**/*.adoc"
+    }
+    
+    attributes = [
+        'snippets': snippetsDir,
+        'source-highlighter': 'highlight.js',
+        'toc': 'left',
+        'toclevels': '3',
+        'sectlinks': 'true'
+    ]
+}
+
+tasks.named('bootJar').configure {
+    dependsOn asciidoctor
+    copy {
+        from "${asciidoctor.outputDir}"
+        into 'build/resources/main/static/docs'
+    }
+}
+
+tasks.named('clean').configure {
+    delete file('src/main/resources/static/docs')
 }
