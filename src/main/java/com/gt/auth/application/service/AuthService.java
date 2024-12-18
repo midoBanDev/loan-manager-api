@@ -86,13 +86,35 @@ public class AuthService {
                 .build();
     }
 
-    public void logout(String accessToken) {
+    /**
+     * 로그아웃 처리
+     * @param accessToken 액세스 토큰
+     * @param refreshToken 리프레시 토큰
+     */
+    public void logout(String accessToken, String refreshToken) {
+        
+        // 1. Access Token 유효성 검증
         if (!jwtTokenProvider.validateToken(accessToken)) {
             throw new JwtAuthenticationException("Invalid access token");
         }
 
-        // 토큰 블랙리스트에 추가
-        tokenBlacklistService.blacklistToken(accessToken, jwtTokenProvider.getTokenExpirationInSeconds());
+
+        // 2. Access Token 블랙리스트 추가
+        long accessTokenRemainingTime = jwtTokenProvider.getValidTimeExpirationFromToken(accessToken); 
+        if (accessTokenRemainingTime > 0) {
+            tokenBlacklistService.blacklistToken(accessToken, accessTokenRemainingTime / 1000);
+        }
+
+        // 3. Refresh Token이 제공된 경우에만 블랙리스트에 추가
+        if (jwtTokenProvider.validateToken(refreshToken)) {
+            // Refresh Token의 남은 유효기간을 계산
+            long refreshTokenRemainingTime = jwtTokenProvider.getValidTimeExpirationFromToken(refreshToken);
+            
+            if (refreshTokenRemainingTime > 0) {
+                // Refresh Token을 블랙리스트에 추가 (TTL 설정)
+                tokenBlacklistService.blacklistToken(refreshToken, refreshTokenRemainingTime / 1000);
+            }
+        }
     }
 
     @Transactional
@@ -112,9 +134,16 @@ public class AuthService {
 
         // 사용자 정보 추출
         GoogleIdToken.Payload payload = idToken.getPayload();
+
+        log.info("payload = {}", payload);
+
         String email = payload.getEmail();
         String name = (String) payload.get("name");
         String pictureUrl = (String) payload.get("picture");
+
+        log.info("email = {}", email);
+        log.info("name = {}", name);
+        log.info("pictureUrl = {}", pictureUrl);    
 
         if(email == null) {
             throw new AuthenticationException("email 정보가 없습니다.");

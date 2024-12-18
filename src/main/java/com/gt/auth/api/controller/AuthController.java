@@ -25,7 +25,7 @@ public class AuthController {
     
     @PostMapping("/social/google")
     public ResponseEntity<AuthResponse> googleLogin(@Valid @RequestBody SocialLoginRequest request) throws GeneralSecurityException, IOException, AuthenticationException {
-        AuthResponse response = authService.socialLogin("google", request.getTokenId());
+        AuthResponse response = authService.socialLogin("google", request.getIdToken());
         return ResponseEntity.ok(response);
     }
 
@@ -45,11 +45,11 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(@RequestHeader("Authorization") String accessToken) {
+    public ResponseEntity<Void> logout(@RequestHeader("Authorization") String accessToken, @RequestHeader("RefreshToken") String refreshToken) {
         if (accessToken != null && accessToken.startsWith("Bearer ")) {
             accessToken = accessToken.substring(7);
         }
-        authService.logout(accessToken);
+        authService.logout(accessToken, refreshToken);
         return ResponseEntity.ok().build();
     }
 } 
