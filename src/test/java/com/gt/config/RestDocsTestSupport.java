@@ -13,6 +13,7 @@ import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
@@ -23,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Import(RestDocsConfiguration.class)  // TestGoogleAuthConfig 추가
 // @WebMvcTest(AuthController.class)    // 웹 계층 관련 빈만 로드 (Controller, ControllerAdvice, Filter 등)하고자 할 경우 사용.
 @ExtendWith(RestDocumentationExtension.class)
+@Transactional
 public class RestDocsTestSupport {
     
     @Autowired

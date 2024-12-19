@@ -29,10 +29,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (path.startsWith("/swagger-ui/") || path.startsWith("/v3/api-docs/") 
             || path.startsWith("/api/v1/auth/social/google") || path.startsWith("/api/v1/auth/login")
-            || path.startsWith("/api/v1/auth/refresh") || path.startsWith("/api/v1/auth/logout")) { 
+            || path.startsWith("/api/v1/auth/refresh") || path.startsWith("/api/v1/auth/logout")
+            || path.startsWith("/docs")) { 
             return true;
         }
 
+        log.info("통과하지 못한 path = {}", path);
         return false;
     }   
 

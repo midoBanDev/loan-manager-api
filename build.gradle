@@ -33,7 +33,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	
+
+    // 정적 파일 자동 업데이트
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
 	// OAuth2
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	
@@ -83,8 +86,12 @@ tasks.named('test').configure {
     doFirst {
         println "test task 시작"
     }
-    outputs.dir snippetsDir
-    useJUnitPlatform()
+    outputs.dir snippetsDir // 테스트 실행 후 스패닛 문서들이 생성될 위치 지정
+
+    useJUnitPlatform {
+        includeTags 'restdocs'  // @Tag(restdocs) 태그가 있는 테스트만 실행
+        excludeTags 'integration'  // @Tag(integration) 태그가 있는 테스트는 제외
+    }
 
     testLogging {
         // 표준 출력 로그만 보기
@@ -97,41 +104,29 @@ tasks.named('test').configure {
 }
 
 tasks.named('asciidoctor').configure {
+
     doFirst {
+        delete file('src/main/resources/static/docs')
         println "asciidoctor task 시작"
     }
-    inputs.dir snippetsDir
-    configurations 'asciidoctorExtensions'
-    dependsOn test
+
+    inputs.dir snippetsDir  // asciidoctor는 해당 경로에 있는 스패닛 문서들을 가지고 최종 결과 HTML 문서를 생선한다.
+    configurations 'asciidoctorExtensions'  // asciidoctorExtensions 설정을 사용하여 확장 기능을 활성화
+    dependsOn test  // test 태스크가 먼저 실행되도록 의존성 설정
     
+    // AsciiDoc 문서들을 찾을 때 어떤 파일을 찾을 패턴을 지정하는 설정.
     sources {
-        include "**/*.adoc"
+        include "**/index.adoc"
     }
-    
-    attributes = [
-        'snippets': snippetsDir,
-        'source-highlighter': 'highlight.js',
-        'toc': 'left',
-        'toclevels': '3',
-        'sectlinks': 'true'
-    ]
-}
 
-
-// static/docs 폴더 비우기
-asciidoctor.doFirst {
-    println "asciidoctor.doFirst 시작"
-    delete file('src/main/resources/static/docs')
-}
-
-// asccidoctor 작업 이후 생성된 HTML 파일을 static/docs 로 copy
-tasks.register('copyDocument', Copy) {
-    doFirst {
-        println "copyDocument task 시작"
+    // asciidoctor 작업 이후 생성된 HTML 파일을 static/docs 로 copy
+    doLast {
+        copy {
+            from file("build/docs/asciidoc")    // 해당 경로는 asciidoctor가 실행 후 작업 결과물을 저장하는 기본 위치이다. 
+            into file("src/main/resources/static/docs") // 애플리케이션 실행 시 접근할 수 있도록 정적 파일 저장 위치
+        }
+        println "asciidoctor task 완료"
     }
-    dependsOn asciidoctor
-    from file("build/docs/asciidoc")
-    into file("src/main/resources/static/docs")
 }
 
 
@@ -139,10 +134,10 @@ tasks.named('bootJar').configure {
     doFirst {
         println "bootJar task 시작"
     }
-    dependsOn copyDocument
+    dependsOn asciidoctor // asciidoctor 태스크가 먼저 실행되도록 의존성 설정
     copy {
-        from "${asciidoctor.outputDir}"
-        into 'build/resources/main/static/docs'
+        from "${asciidoctor.outputDir}" // asciidoctor 작업 결과물을 저장하는 기본 위치를 불러온다. (build/docs/asciidoc)
+        into 'build/resources/main/static/docs' // 빌드 시 jar 파일에 포함시키기 위해 해당 경로에 복사한다.
     }
 }
 
@@ -155,12 +150,41 @@ tasks.named('clean').configure {
     delete file('src/main/resources/static/docs')
 }
 
+tasks.register('quickDocs', org.asciidoctor.gradle.jvm.AsciidoctorTask) {
 
+    doFirst {
+        println "QuickDocs task 실행 시작"
+        // println "snippetsDir 위치: ${snippetsDir}"
+        // println "index.adoc 위치: ${project.file('src/docs/asciidoc')}"
+        
+        delete file('src/main/resources/static/docs')
+    }
+
+    setSourceDir(file('src/docs/asciidoc'))
+    setOutputDir(file('build/docs/asciidoc'))
+
+    inputs.dir snippetsDir
+
+    configurations 'asciidoctorExtensions'
+
+     // 항상 실행되도록 설정
+    outputs.upToDateWhen { false }   
+
+    doLast {
+        println "문서 생성 완료"
+        println "생성된 문서 위치: ${outputDir}"
+        
+        copy {
+            from file("build/docs/asciidoc")
+            into file("src/main/resources/static/docs")
+        }
+        println "문서 복사 완료"
+    }
+}
 /*
 ./gradlew build 실행 시:
 
 1. build 태스크 시작
    └── bootJar (build의 의존성)
-        └── copyDocument (bootJar의 의존성)
-             └── asciidoctor (copyDocument의 의존성)
+        └── asciidoctor (bootJar의 의존성)
 */

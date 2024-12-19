@@ -1,10 +1,17 @@
-= GT Platform API 문서
+= GT Platform 어플리케이션 API 문서
+:sectnums:
 :doctype: book
 :icons: font
-:source-highlighter: highlightjs
+:source-highlighter: highlightjs    
 :toc: left
 :toclevels: 3
-:sectlinks:
+:sectlinks: true
+
+:hardbreaks:
+
+***
+Lee-Woogi <amd0223@gmail.com>
+
 
 [[overview]]
 == Overview
@@ -72,3 +79,22 @@ include::{snippets}/auth-controller-test/login/http-request.adoc[]
 
 ==== HTTP Response
 include::{snippets}/auth-controller-test/login/http-response.adoc[]
+
+    
+// 1. 기본 스니펫 포함 방식
+// include::{snippets}/member-controller-test/sign-up/http-request.adoc[]
+// include::{snippets}/member-controller-test/sign-up/request-fields.adoc[]
+// include::{snippets}/member-controller-test/sign-up/http-response.adoc[]
+// include::{snippets}/member-controller-test/sign-up/response-fields.adoc[]
+
+// 2. operation 매크로 사용 방식 (더 간단)
+
+[[person]]
+== Person API
+
+[[person-create]]
+=== 고객 정보 등록
+
+`POST /api/person/create`
+
+operation::person-controller-test/create-person-rest-docs-test[snippets='curl-request,http-request,httpie-request,http-response,request-body,request-fields,response-body,response-fields']

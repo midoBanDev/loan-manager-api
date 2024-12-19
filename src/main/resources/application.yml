@@ -13,6 +13,12 @@ spring:
     password: gt-1234
     driver-class-name: org.postgresql.Driver
   
+  # 개발 도구 설정
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
 
   #  show-sql: true: 실행되는 SQL 쿼리를 콘솔에 출력
   #  format_sql: true: SQL 쿼리를 보기 좋게 포맷팅
@@ -61,7 +67,7 @@ logging:
     console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
   level:
-    root: DEBUG
+    root: INFO
     com:  
       gt: DEBUG
     org:

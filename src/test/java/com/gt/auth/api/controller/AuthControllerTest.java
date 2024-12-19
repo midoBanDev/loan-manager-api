@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
@@ -26,6 +27,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 public class AuthControllerTest extends RestDocsTestSupport {
 
     @Test
+    @Tag("restdocs")
     @DisplayName("로그인 성공 테스트")
     void login() throws Exception {
         // given
