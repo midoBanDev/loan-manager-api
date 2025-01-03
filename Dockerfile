@@ -24,4 +24,4 @@ WORKDIR /app
 COPY --from=builder /app/build/libs/loan-manager-api-0.0.1-SNAPSHOT.jar loan-manager-api.jar
 
 EXPOSE 8080 
-C ["java", "-jar", "-Dspring.profiles.active=prod", "loan-manager-api.jar"]
+CMD ["java", "-jar", "-Dspring.profiles.active=prod", "loan-manager-api.jar"]
