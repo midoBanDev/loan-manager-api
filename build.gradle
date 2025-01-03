@@ -89,7 +89,7 @@ ext {
 // REST Docs 테스트
 tasks.named('test').configure {
 
-    systemProperty 'spring.profiles.active', 'test'
+    //systemProperty 'spring.profiles.active', 'test,oauth'
 
     doFirst {
         println "test task 시작"

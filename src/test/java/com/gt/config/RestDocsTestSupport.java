@@ -28,7 +28,7 @@ import com.gt.user.domain.repository.UserRepository;
 // @WebMvcTest(AuthController.class)    // 웹 계층 관련 빈만 로드 (Controller, ControllerAdvice, Filter 등)하고자 할 경우 사용.
 @ExtendWith(RestDocumentationExtension.class)
 @Transactional
-//@ActiveProfiles("test")
+@ActiveProfiles("test")
 public class RestDocsTestSupport {
     
     @Autowired
