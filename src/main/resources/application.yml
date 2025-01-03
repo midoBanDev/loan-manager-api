@@ -5,9 +5,13 @@ spring:
 
   # 환경에 따라 프로파일 설정
   profiles:
+    # application.oauth.yml 파일을 포함
+    include:
+      - oauth
+
     active: ${SPRING_PROFILES_ACTIVE:local}
 
-
+  
 ---
 
 
@@ -110,10 +114,6 @@ spring:
 
 # 공통 설정
 spring:
-  # application.oauth.yml 파일을 포함
-  profiles:
-    include:
-      - oauth
 
   # Redis 설정 (Spring Boot 3.x 버전)
   data:

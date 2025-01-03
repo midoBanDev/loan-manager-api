@@ -10,12 +10,17 @@ RUN git clone https://github.com/midoBanDev/loan-manager-api.git .
 
 # 또는 로컬 코드 베이스 정보 카피
 #RUN . .
+ENV SPRING_PROFILES_ACTIVE=test,oauth
+
 
 # gradlew 파일에 실행 권한 부여
-#RUN chmod +x gradlew
+RUN chmod +x gradlew
 
 # 빌드
-RUN gradle build
+RUN ./gradlew build
+
+
+# 런타임 이미지로 eclipse-temurin:17-jre 사용
 FROM eclipse-temurin:17-jre
 
 # 애플리케이션을 실행할 작업 디렉토리를 생성
