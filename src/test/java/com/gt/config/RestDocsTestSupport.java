@@ -10,6 +10,7 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -26,6 +27,7 @@ import com.gt.user.domain.repository.UserRepository;
 // @WebMvcTest(AuthController.class)    // 웹 계층 관련 빈만 로드 (Controller, ControllerAdvice, Filter 등)하고자 할 경우 사용.
 @ExtendWith(RestDocumentationExtension.class)
 @Transactional
+@ActiveProfiles("test")
 public class RestDocsTestSupport {
     
     @Autowired

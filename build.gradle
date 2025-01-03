@@ -88,6 +88,7 @@ ext {
 
 // REST Docs 테스트
 tasks.named('test').configure {
+
     doFirst {
         println "test task 시작"
     }
