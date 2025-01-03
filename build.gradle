@@ -89,6 +89,8 @@ ext {
 // REST Docs 테스트
 tasks.named('test').configure {
 
+    systemProperty 'spring.profiles.active', 'local'
+
     doFirst {
         println "test task 시작"
     }

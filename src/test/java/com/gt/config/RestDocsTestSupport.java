@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.env.Environment;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
@@ -27,7 +28,7 @@ import com.gt.user.domain.repository.UserRepository;
 // @WebMvcTest(AuthController.class)    // 웹 계층 관련 빈만 로드 (Controller, ControllerAdvice, Filter 등)하고자 할 경우 사용.
 @ExtendWith(RestDocumentationExtension.class)
 @Transactional
-@ActiveProfiles("test")
+//@ActiveProfiles("test")
 public class RestDocsTestSupport {
     
     @Autowired
