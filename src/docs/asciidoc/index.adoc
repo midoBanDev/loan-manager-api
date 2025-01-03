@@ -68,17 +68,17 @@ Lee-Woogi <amd0223@gmail.com>
 
 `POST /api/v1/auth/login`
 
-==== Request Fields
-include::{snippets}/auth-controller-test/login/request-fields.adoc[]
-
-==== Response Fields
-include::{snippets}/auth-controller-test/login/response-fields.adoc[]
-
 ==== HTTP Request
 include::{snippets}/auth-controller-test/login/http-request.adoc[]
 
+==== Request Fields
+include::{snippets}/auth-controller-test/login/request-fields.adoc[]
+
 ==== HTTP Response
 include::{snippets}/auth-controller-test/login/http-response.adoc[]
+
+==== Response Fields
+include::{snippets}/auth-controller-test/login/response-fields.adoc[]
 
     
 // 1. 기본 스니펫 포함 방식
@@ -97,4 +97,16 @@ include::{snippets}/auth-controller-test/login/http-response.adoc[]
 
 `POST /api/person/create`
 
-operation::person-controller-test/create-person-rest-docs-test[snippets='curl-request,http-request,httpie-request,http-response,request-body,request-fields,response-body,response-fields']
+==== HTTP Request
+include::{snippets}/person-controller-test/create-person/http-request.adoc[]
+
+==== Request Fields
+include::{snippets}/person-controller-test/create-person/request-fields.adoc[]
+
+==== HTTP Response
+include::{snippets}/person-controller-test/create-person/http-response.adoc[]
+
+==== Response Fields
+include::{snippets}/person-controller-test/create-person/response-fields.adoc[]
+
+//operation::person-controller-test/create-person[snippets='http-request,request-fields,request-body,http-response,response-fields,response-body']

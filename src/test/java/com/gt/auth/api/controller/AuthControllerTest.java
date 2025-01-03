@@ -3,14 +3,17 @@ package com.gt.auth.api.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.gt.auth.api.dto.AuthRequest;
 import com.gt.config.RestDocsTestSupport;
+import com.gt.user.domain.entity.User;
+import com.gt.user.domain.entity.UserRole;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,6 +28,19 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 
 @Slf4j
 public class AuthControllerTest extends RestDocsTestSupport {
+
+    @BeforeEach
+    void setUp() {
+        User user = User.builder()
+            .name("test")
+            .email("test@example.com")
+            .password(new BCryptPasswordEncoder().encode("password123"))
+            .role(UserRole.ADMIN)
+            .provider("google")
+            .build();
+        userRepository.save(user);
+    }
+
 
     @Test
     @Tag("restdocs")

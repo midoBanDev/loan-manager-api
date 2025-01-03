@@ -18,6 +18,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gt.user.domain.repository.UserRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -37,8 +38,8 @@ public class RestDocsTestSupport {
     // // @MockitoBean
     // // protected AuthService authService;
 
-    // // @MockitoBean
-    // // protected UserRepository userRepository;
+    @Autowired
+    protected UserRepository userRepository;
 
     @Autowired
     protected RestDocumentationResultHandler restDocs;
