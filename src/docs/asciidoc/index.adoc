@@ -1,4 +1,4 @@
-= GT Platform 어플리케이션 API 문서
+= Loan Management 어플리케이션 API 문서
 :sectnums:
 :doctype: book
 :icons: font

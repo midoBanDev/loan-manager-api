@@ -5,11 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
-@EnableJpaAuditing
-public class GtPlatformApplication {
+@EnableJpaAuditing	// JPA Auditing 활성화
+public class LoanManagerApiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GtPlatformApplication.class, args);
+		SpringApplication.run(LoanManagerApiApplication.class, args);
 	}
 
 }

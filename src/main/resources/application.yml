@@ -1,6 +1,6 @@
 spring:
   application:
-    name: GTPlatform
+    name: loan-manager-api
   
   profiles:
     include:
@@ -8,9 +8,9 @@ spring:
   
   # PostgreSQL 연결 설정
   datasource:
-    url: jdbc:postgresql://localhost:5432/gt-platform
-    username: gt-user
-    password: gt-1234
+    url: jdbc:postgresql://${DB_URL:localhost}:${DB_PORT:5432}/${DB_NAME:mydb}
+    username: ${DB_USERNAME:loan-user}
+    password: ${DB_PASSWORD:loan-1234}
     driver-class-name: org.postgresql.Driver
   
   # 개발 도구 설정
