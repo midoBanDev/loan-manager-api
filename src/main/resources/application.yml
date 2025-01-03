@@ -1,11 +1,36 @@
 spring:
+  # 애플리케이션 이름
   application:
     name: loan-manager-api
-  
+
+  # 환경에 따라 프로파일 설정
   profiles:
-    include:
-      - oauth
-  
+    active: ${SPRING_PROFILES_ACTIVE:local}
+
+  #  show-sql: true: 실행되는 SQL 쿼리를 콘솔에 출력
+  #  format_sql: true: SQL 쿼리를 보기 좋게 포맷팅
+  #  highlight_sql: true: SQL 쿼리에 하이라이트 적용
+  #  use_sql_comments: true: JPQL 주석도 함께 출력
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        highlight_sql: true
+
+
+---
+
+
+# local 프로파일 설정
+spring:
+  config:
+    activate:
+      on-profile: local
+
   # PostgreSQL 연결 설정
   datasource:
     url: jdbc:postgresql://${DB_URL:loan-db}:${DB_PORT:5432}/${DB_NAME:mydb}
@@ -20,38 +45,64 @@ spring:
     livereload:
       enabled: true
 
-  #  show-sql: true: 실행되는 SQL 쿼리를 콘솔에 출력
-  #  format_sql: true: SQL 쿼리를 보기 좋게 포맷팅
-  #  highlight_sql: true: SQL 쿼리에 하이라이트 적용
-  #  use_sql_comments: true: JPQL 주석도 함께 출력
+
+
+---
+
+
+# prod 프로파일 설정
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:postgresql://${DB_URL}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+
+
+
+---
+
+# test 프로파일 설정
+spring:
+  config:
+    activate:
+      on-profile: test
   
-  # JPA 설정
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-        highlight_sql: true
+  # 테스트 데이터베이스 설정
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password: 
+    driver-class-name: org.h2.Driver
+
+  # h2 콘솔 설정
+  h2:
+    console:
+      enabled: true
+      path: /h2-console  
+
+
+
+---
+
+
+
+# 공통 설정
+spring:
+  # application.oauth.yml 파일을 포함
+  profiles:
+    include:
+      - oauth
 
   # Redis 설정 (Spring Boot 3.x 버전)
   data:
     redis:
-      host: localhost
-      port: 6379    
-
-#      password: # 필요한 경우
-#      database: 0 # Redis 데이터베이스 인덱스 (0-15)
-#      timeout: 60000 # 연결 타임아웃 (ms)
-#      lettuce:
-#        pool:
-#          max-active: 8 # 풀의 최대 연결 수
-#          max-idle: 8 # 풀의 최대 유휴 연결 수
-#          min-idle: 0 # 풀의 최소 유휴 연결 수
-#          max-wait: -1 # 풀이 바쁠 때 연결을 기다리는 최대 시간 (-1은 무제한)
-
+      host: ${REDIS_HOST:redis-server}
+      port: ${REDIS_PORT:6379}
 
 # JWT Configuration
 jwt:

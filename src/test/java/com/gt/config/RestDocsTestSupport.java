@@ -22,7 +22,7 @@ import com.gt.user.domain.repository.UserRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Import(RestDocsConfiguration.class)  // TestGoogleAuthConfig 추가
+@Import(RestDocsConfiguration.class) // RestDocsConfiguration 클래스 추가
 // @WebMvcTest(AuthController.class)    // 웹 계층 관련 빈만 로드 (Controller, ControllerAdvice, Filter 등)하고자 할 경우 사용.
 @ExtendWith(RestDocumentationExtension.class)
 @Transactional
