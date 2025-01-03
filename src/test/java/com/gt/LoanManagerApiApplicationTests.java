@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @SpringBootTest
-class GtPlatformApplicationTests{
+class LoanManagerApiApplicationTests{
 
     @Autowired
     private ApplicationContext applicationContext;
