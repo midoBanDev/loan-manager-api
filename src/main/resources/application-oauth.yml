@@ -1,0 +1,31 @@
+spring:
+  security:
+    oauth2:
+      client:
+        # client-id와 client-secret 값을 실제 OAuth 제공자에서 발급받은 값으로 교체해야 한다.
+        # 운영 환경에서는 별도의 보안 저장소(예: AWS Secrets Manager, HashiCorp Vault 등)를 사용하는 것을 고려할 수 있다.
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+        #     client-secret: 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
+        #     redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+        #     scope:
+        #       - email
+        #       - profile
+        #       - openid
+        #       - https://www.googleapis.com/auth/userinfo.email
+        #       - https://www.googleapis.com/auth/userinfo.profile
+        # provider:
+        #   google:
+        #     authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+        #     token-uri: https://oauth2.googleapis.com/token
+        #     user-info-uri: https://openidconnect.googleapis.com/v1/userinfo
+        #     user-name-attribute: sub
+          
+          # kakao:
+          #   client-id: your-kakao-client-id
+          #   client-secret: your-kakao-client-secret
+          
+          # naver:
+          #   client-id: your-naver-client-id
+          #   client-secret: your-naver-client-secret 

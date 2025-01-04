@@ -18,8 +18,9 @@ RUN chmod +x gradlew
 
 # ENV SPRING_PROFILES_ACTIVE=test
 
+
 # 빌드
-RUN ./gradlew build
+RUN ./gradlew build -DGOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
 
 
 # 런타임 이미지로 eclipse-temurin:17-jre 사용
