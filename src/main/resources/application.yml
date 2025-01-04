@@ -143,8 +143,12 @@ logging:
         web: INFO
         hibernate: debug
         SQL: debug
+        boot:
+          context:
+            config: DEBUG
       hibernate:
         #SQL: debug
         type:
           descriptor:
             sql: TRACE
+      

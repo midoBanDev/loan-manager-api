@@ -10,11 +10,13 @@ RUN git clone https://github.com/midoBanDev/loan-manager-api.git .
 
 # 또는 로컬 코드 베이스 정보 카피
 #RUN . .
-ENV SPRING_PROFILES_ACTIVE=test,oauth
+
 
 
 # gradlew 파일에 실행 권한 부여
 RUN chmod +x gradlew
+
+# ENV SPRING_PROFILES_ACTIVE=test
 
 # 빌드
 RUN ./gradlew build
