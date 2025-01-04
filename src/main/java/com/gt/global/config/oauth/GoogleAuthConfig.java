@@ -12,7 +12,7 @@ import java.util.Collections;
 @Configuration
 public class GoogleAuthConfig {
 
-    @Value("${spring.security.oauth2.client.registration.google.client-id}")
+    //@Value("${spring.security.oauth2.client.registration.google.client-id}")
     private String clientId;
 
     @Bean
