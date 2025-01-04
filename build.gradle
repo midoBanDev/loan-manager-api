@@ -143,9 +143,8 @@ tasks.named('bootJar').configure {
         println "bootJar task 시작"
     }
     dependsOn asciidoctor // asciidoctor 태스크가 먼저 실행되도록 의존성 설정
-    copy {
-        from "${asciidoctor.outputDir}" // asciidoctor 작업 결과물을 저장하는 기본 위치를 불러온다. (build/docs/asciidoc)
-        into 'build/resources/main/static/docs' // 빌드 시 jar 파일에 포함시키기 위해 해당 경로에 복사한다.
+    from ("${asciidoctor.outputDir}") {
+        into 'BOOT-INF/classes/static/docs'
     }
 }
 
