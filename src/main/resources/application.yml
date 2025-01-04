@@ -5,10 +5,6 @@ spring:
 
   # 환경에 따라 프로파일 설정
   profiles:
-    # application.oauth.yml 파일을 포함
-    include:
-      - oauth
-
     active: ${SPRING_PROFILES_ACTIVE:local}
 
   
@@ -54,8 +50,8 @@ spring:
 spring:
   config:
     activate:
-      on-profile: test
-  
+      on-profile: test 
+
   # 테스트 데이터베이스 설정
   datasource:
     url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
@@ -114,6 +110,10 @@ spring:
 
 # 공통 설정
 spring:
+  config:
+    # application-oauth.yml 파일을 포함
+    import:
+      - classpath:/application-oauth.yml 
 
   # Redis 설정 (Spring Boot 3.x 버전)
   data:
