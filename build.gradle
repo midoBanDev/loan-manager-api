@@ -114,11 +114,23 @@ tasks.named('test').configure {
 tasks.named('asciidoctor').configure {
 
     doFirst {
-        delete file('src/main/resources/static/docs')
+        // delete file('src/main/resources/static/docs')
         println "asciidoctor task 시작"
+
+        def docsDir = file('src/main/resources/static/docs')
+        println "삭제 전 docs 폴더 존재 여부: ${docsDir.exists()}"
+        if (docsDir.exists()) {
+            println "삭제 전 docs 폴더 내용:"
+            docsDir.listFiles().each { println "- ${it.name}" }
+
+            delete docsDir
+        }
+        
+        println "docs 폴더 삭제 후 존재 여부: ${docsDir.exists()}"
+
     }
 
-    inputs.dir snippetsDir  // asciidoctor는 해당 경로에 있는 스패닛 문서들을 가지고 최종 결과 HTML 문서를 생선한다.
+    inputs.dir snippetsDir  // asciidoctor는 해당 경로에 있는 스패닛 문서들을 가지고 최종 결과 HTML 문서를 생성한다.
     configurations 'asciidoctorExtensions'  // asciidoctorExtensions 설정을 사용하여 확장 기능을 활성화
     dependsOn test  // test 태스크가 먼저 실행되도록 의존성 설정
     
@@ -144,7 +156,8 @@ tasks.named('bootJar').configure {
     }
     dependsOn asciidoctor // asciidoctor 태스크가 먼저 실행되도록 의존성 설정
     from ("${asciidoctor.outputDir}") {
-        into 'BOOT-INF/classes/static/docs'
+        // into 'BOOT-INF/classes/static/docs'
+        into 'build/resources/main/static/docs' // 빌드 시 jar 파일에 포함시키기 위해 해당 경로에 복사한다.
     }
 }
 
