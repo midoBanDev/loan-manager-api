@@ -155,10 +155,6 @@ tasks.named('bootJar').configure {
         println "bootJar task 시작"
     }
     dependsOn asciidoctor // asciidoctor 태스크가 먼저 실행되도록 의존성 설정
-    from ("${asciidoctor.outputDir}") {
-        // into 'BOOT-INF/classes/static/docs'
-        into 'build/resources/main/static/docs' // 빌드 시 jar 파일에 포함시키기 위해 해당 경로에 복사한다.
-    }
 }
 
 // clean 명령어 사용 시에만 static/docs 폴더 삭제. 
@@ -207,4 +203,5 @@ tasks.register('quickDocs', org.asciidoctor.gradle.jvm.AsciidoctorTask) {
 1. build 태스크 시작
    └── bootJar (build의 의존성)
         └── asciidoctor (bootJar의 의존성)
+             └── test (asciidoctor의 의존성)
 */
