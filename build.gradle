@@ -153,8 +153,16 @@ tasks.named('asciidoctor').configure {
 tasks.named('bootJar').configure {
     doFirst {
         println "bootJar task 시작"
+
+        copy { 
+            from file("${asciidoctor.outputDir}")
+            into file("build/resources/main/static/docs")
+        }
     }
     dependsOn asciidoctor // asciidoctor 태스크가 먼저 실행되도록 의존성 설정
+
+
+
 }
 
 // clean 명령어 사용 시에만 static/docs 폴더 삭제. 
