@@ -39,6 +39,8 @@ jobs:
         context: .
         # Dockerfile의 경로
         file: Dockerfile
+        build-args: |
+            GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
         push: true  # 이미지를 레지스트리에 푸시합니다.
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/loan-manager-api:${{ github.sha }}  
 
