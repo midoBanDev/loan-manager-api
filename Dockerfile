@@ -35,10 +35,11 @@ RUN apt-get update && apt-get install -y \
 # 애플리케이션을 실행할 작업 디렉토리를 생성
 WORKDIR /app
 
+ARG GOOGLE_CLIENT_ID
 ENV GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
 
 # 임시 삭제 예정.
-RUN echo "Using API_KEY: $API_KEY"
+RUN echo "Using GOOGLE_CLIENT_ID: $GOOGLE_CLIENT_ID"
 
 # 빌드 이미지에서 생성된 JAR 파일을 런타임 이미지로 복사
 COPY --from=builder /app/build/libs/loan-manager-api-0.0.1-SNAPSHOT.jar loan-manager-api.jar
