@@ -16,7 +16,6 @@ jobs:
 
     -
       name: Set up QEMU
-      # 다중 플랫폼(Docker) 이미지를 빌드할 수 있도록 해준다.
       uses: docker/setup-qemu-action@v3
 
     - 
@@ -49,7 +48,7 @@ jobs:
       - name: Authenticate GitHub CLI
         env:
           GITHUB_TOKEN: ${{ secrets.G_TOKEN }}
-          
+
       - name: Create Issue for Build Failure
         run: |
           gh issue create --title "Build Failure in PR #${{ github.event.pull_request.number }}" \
