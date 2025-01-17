@@ -46,7 +46,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.G_TOKEN }}
         run: |
-          echo $G_TOKEN | gh auth login --with-token
+          echo $GITHUB_TOKEN | gh auth login --with-token
 
       - name: Create Issue for Build Failure
         run: |
