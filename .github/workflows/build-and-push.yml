@@ -1,6 +1,5 @@
-# PR 검증 워크플로우
 name: PR Pipeline
-
+# PR 검증 워크플로우
 
 on:
  pull_request:
@@ -42,7 +41,8 @@ jobs:
       run: echo "Docker build failed."
 
 ---     
-# 빌드 & 푸시 워크플로우       
+
+# 빌드 & 푸시 워크플로우      
 name: Backend Build and Push
 
 on:
