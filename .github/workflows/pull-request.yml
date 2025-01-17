@@ -45,12 +45,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y gh
 
-      - name: Authenticate GitHub CLI
-        env:
-          GITHUB_TOKEN: ${{ secrets.G_TOKEN }}
-
       - name: Create Issue for Build Failure
         run: |
           gh issue create --title "Build Failure in PR #${{ github.event.pull_request.number }}" \
-                          --body "The build for PR #${{ github.event.pull_request.html_url }} failed. Please investigate." \
-                          --label "bug,build-failure"  
+                         --body "The build for PR #${{ github.event.pull_request.html_url }} failed. Please investigate." \
+                         --label "bug,build-failure"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
