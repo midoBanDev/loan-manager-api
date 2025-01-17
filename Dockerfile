@@ -13,7 +13,7 @@ COPY . .
 
 # gradlew 파일에 실행 권한 부여
 RUN chmod +x gradlew
-RUN ./gradlew build
+RUN ./gradlew build --no-daemon
 # 빌드
 #RUN gradle build
 
@@ -30,18 +30,23 @@ RUN apt-get update && apt-get install -y \
     net-tools \
     curl \
     vim \
+    tzdata \
     && rm -rf /var/lib/apt/lists/*
 
 # 애플리케이션을 실행할 작업 디렉토리를 생성
 WORKDIR /app
 
 ARG GOOGLE_CLIENT_ID
+ARG DB_URL
 ARG DB_USERNAME 
 ARG DB_PASSWORD
+ARG DB_NAME
 
 ENV GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+ENV DB_URL=${DB_URL}
 ENV DB_USERNAME=${DB_USERNAME}
 ENV DB_PASSWORD=${DB_PASSWORD}
+ENV DB_NAME=${DB_NAME}
 
 # 빌드 이미지에서 생성된 JAR 파일을 런타임 이미지로 복사
 COPY --from=builder /app/build/libs/loan-manager-api-0.0.1-SNAPSHOT.jar loan-manager-api.jar
