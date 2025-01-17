@@ -37,6 +37,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 ARG GOOGLE_CLIENT_ID
+
 ARG DB_URL
 ARG DB_USERNAME 
 ARG DB_PASSWORD
