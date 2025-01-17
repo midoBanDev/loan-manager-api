@@ -7,7 +7,7 @@ on:
 
 jobs:
   pull_request_build_test:
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest    
     steps:
     - 
       name: Checkout Repository
@@ -30,7 +30,26 @@ jobs:
         build-args: |
             GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
         push: false
-    
-    - name: Notify Failure
-      if: failure()
-      run: echo "Docker build failed."
+        platforms: linux/amd64,linux/arm64,linux/arm/v7
+  
+  create-issue-on-failure:
+    needs: pull_request_build_test
+    if: failure() # 빌드 실패 시 실행
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install GitHub CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gh
+
+      - name: Authenticate GitHub CLI
+        env:
+          GITHUB_TOKEN: ${{ secrets.G_TOKEN }}
+        run: |
+          echo $G_TOKEN | gh auth login --with-token
+
+      - name: Create Issue for Build Failure
+        run: |
+          gh issue create --title "Build Failure in PR #${{ github.event.pull_request.number }}" \
+                          --body "The build for PR #${{ github.event.pull_request.html_url }} failed. Please investigate." \
+                          --label "bug,build-failure"  
