@@ -38,10 +38,12 @@ WORKDIR /app
 ARG GOOGLE_CLIENT_ID
 ARG DB_USERNAME 
 ARG DB_PASSWORD
+ARG DB_NAME
 
 ENV GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
 ENV DB_USERNAME=${DB_USERNAME}
 ENV DB_PASSWORD=${DB_PASSWORD}
+ENV DB_NAME=${DB_NAME}
 
 # 빌드 이미지에서 생성된 JAR 파일을 런타임 이미지로 복사
 COPY --from=builder /app/build/libs/loan-manager-api-0.0.1-SNAPSHOT.jar loan-manager-api.jar
