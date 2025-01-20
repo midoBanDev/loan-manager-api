@@ -48,7 +48,7 @@ jobs:
             DB_NAME=${{ secrets.DB_NAME }}
             TZ=${{ vars.TZ }}
         push: true  # 이미지를 레지스트리에 푸시합니다.
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/loan-manager-api:${{ github.sha }}
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/loan-api-dev:${{ github.sha }}
 
 
   build-and-push-prod:
@@ -92,4 +92,4 @@ jobs:
             DB_NAME=${{ secrets.DB_NAME }}
             TZ=${{ vars.TZ }}
         push: true  # 이미지를 레지스트리에 푸시합니다.
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/loan-manager-api:${{ github.sha }}
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/loan-api-prod:${{ github.sha }}
