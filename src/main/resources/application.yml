@@ -146,6 +146,7 @@ logging:
       gt: DEBUG
     org:
       springframework:
+        security: DEBUG
         web: INFO
         hibernate: debug
         SQL: debug
