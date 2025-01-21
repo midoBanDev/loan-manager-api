@@ -127,6 +127,12 @@ jwt:
   expiration-seconds: 86400
   refresh-token-validity-in-milliseconds: 604800000
 
+# CORS Configuration
+cors:
+  origin-url: ${CORS_ORIGIN_URL:localhost}
+  origin-port: ${CORS_ORIGIN_PORT:3000}
+
+
 # Logging Configuration
 logging:
   #file:
