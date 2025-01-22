@@ -129,7 +129,7 @@ jwt:
 
 # CORS Configuration
 cors:
-  origin-url: ${CORS_ORIGIN_URL:localhost}
+  origin-url: ${CORS_ORIGIN_URL:http://localhost}
   origin-port: ${CORS_ORIGIN_PORT:3000}
 
 
