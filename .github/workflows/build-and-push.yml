@@ -5,10 +5,26 @@ on:
     branches: 
       - main
       - dev
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deploy to environment'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - development
+          - production
+
 
 jobs:
   build-and-push-dev:
-    if: 1 == 2
+    if: >
+      1 == 2 || 
+      (github.event_name == 'workflow_dispatch' && 
+      (github.event.inputs.environment == 'development' || github.event.inputs.environment == 'all'))
+    
     runs-on: ubuntu-latest  
     environment: development
 
@@ -54,7 +70,10 @@ jobs:
 
 
   build-and-push-prod:
-    if: github.ref == 'refs/heads/main'
+    if: >
+      github.ref == 'refs/heads/main' ||
+      (github.event_name == 'workflow_dispatch' && 
+      (github.event.inputs.environment == 'production' || github.event.inputs.environment == 'all'))
     runs-on: ubuntu-latest  
     environment: production
 
