@@ -30,13 +30,21 @@ public class WebConfig implements WebMvcConfigurer {
         log.info("originPort = {}", originPort);    
         log.info("http://"+originUrl+":"+originPort);
 
+        StringBuilder origins = new StringBuilder();
+        origins.append("http://"+originUrl);
+
+        if(!originPort.equals("None")) {
+            origins.append(":"+originPort);
+        }
+
+        log.info("origins = {}", origins.toString());
 
         /**
          * Access-Control-Allow-Credentials 설정 주의:
          * 클라이언트에서 쿠키 또는 인증 정보를 포함하는 요청을 보내려면 allowedOrigins에 와일드카드(*)를 사용할 수 없습니다. 대신 특정 도메인을 명시해야 합니다.
          */
         registry.addMapping("/**") // 모든 경로에 대해 CORS 허용
-                .allowedOrigins("http://"+originUrl+":"+originPort) // 프론트엔드 도메인 허용
+                .allowedOrigins(origins.toString()) // 프론트엔드 도메인 허용
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용할 HTTP 메서드
                 .allowedHeaders("*"); // 허용할 헤더
                 // .allowCredentials(true); // 쿠키 및 인증 정보 허용
