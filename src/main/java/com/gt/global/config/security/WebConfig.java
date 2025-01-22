@@ -28,10 +28,10 @@ public class WebConfig implements WebMvcConfigurer {
 
         log.info("originUrl = {}", originUrl);
         log.info("originPort = {}", originPort);    
-        log.info("http://"+originUrl+":"+originPort);
+        log.info(originUrl+":"+originPort);
 
         StringBuilder origins = new StringBuilder();
-        origins.append("http://"+originUrl);
+        origins.append(originUrl);
 
         if(!originPort.equals("None")) {
             origins.append(":"+originPort);
